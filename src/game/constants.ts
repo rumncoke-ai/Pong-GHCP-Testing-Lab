@@ -1,0 +1,9 @@
+export const FIELD_WIDTH = 800;
+export const FIELD_HEIGHT = 600;
+export const PADDLE_WIDTH = 160;
+export const PADDLE_HEIGHT = 18;
+export const PADDLE_MARGIN = 24;
+export const PADDLE_SPEED = 500;
+export const BALL_RADIUS = 10;
+export const BALL_SPEED = 260;
+export const MAX_FRAME_SECONDS = 0.05;

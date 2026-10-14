@@ -1,0 +1,30 @@
+{
+  "name": "copilot-pong-testing-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:solutions:unit": "vitest run solutions/tests/unit",
+    "test:solutions:integration": "vitest run solutions/tests/integration",
+    "test:e2e": "playwright test tests/e2e",
+    "test:playwright": "playwright test tests/playwright",
+    "test:solutions:e2e": "playwright test solutions/tests/e2e",
+    "test:solutions:playwright": "playwright test solutions/tests/playwright",
+    "test:all": "npm run test && npm run test:e2e && npm run test:playwright"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.0.0",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.0",
+    "vitest": "^3.2.4"
+  }
+}
