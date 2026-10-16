@@ -10,18 +10,24 @@ By the end, participants can:
 4. use Playwright web-first assertions, keyboard input, storage setup, screenshots, and traces;
 5. keep regression tests while applying the smallest safe fix.
 
-## Suggested 100-minute agenda
+## Suggested 30–45-minute agenda
 
-| Time | Activity |
-|---:|---|
-| 0–10 min | Run the game, review architecture, explain red/green/refactor |
-| 10–30 min | Level 1: unit tests and boundary fixes |
-| 30–55 min | Level 2: integration tests and state/input fixes |
-| 55–75 min | Level 3: browser E2E scoring/reset journeys |
-| 75–92 min | Level 4: Playwright keyboard tests and trace inspection |
-| 92–100 min | Coverage audit and retrospective |
+Use the 45-minute route for a guided workshop covering all six seeded defects: three unit, one integration, and two E2E. Use the 30-minute route for a demo-led introduction with one hands-on unit scenario. Both routes retain all four workshop levels.
 
-For a 60-minute version, provide the Level 1 solution tests and complete one scenario per later level.
+**Before the session:** have participants install dependencies and Playwright Chromium, confirm `npm run build` succeeds, and open the running game. The instructor should rehearse the selected scenarios and have failing tests and a trace ready to demonstrate; setup and browser installation are outside the timed agenda.
+
+| 45-minute route | 30-minute route | Activity |
+|---:|---:|---|
+| 0–4 min | 0–3 min | Run the game, introduce the test boundaries, and explain the tests-first red/green/refactor loop |
+| 4–14 min | 3–9 min | Level 1: write a failing paddle-clamp boundary test and make the smallest fix. In 45 minutes, also demonstrate ball-radius wall checks and numeric best-score comparison; leave those two as follow-up exercises in 30 minutes |
+| 14–21 min | 9–14 min | Level 2: reproduce Space key-repeat with real keyboard events, filter repeated events, and rerun the integration regressions. Keep launch direction and paddle-overlap behavior unchanged |
+| 21–31 min | 14–21 min | Level 3: demonstrate failing browser journeys for immediate Best updates and record preservation after Reset run, apply the two fixes, and rerun the journeys using deterministic setup |
+| 31–39 min | 21–26 min | Level 4: verify the Space-repeat fix and paddle boundaries with Playwright keyboard input and deterministic stepping; inspect a prepared failure trace |
+| 39–45 min | 26–30 min | Run the build and broader regression suite, recap which boundary caught each defect, and take questions |
+
+**Pacing:** keep each demonstrated repair tests-first: show the failure, explain it, apply the minimal fix, and rerun the narrow test. In the 30-minute route, instructor-drive Levels 2–4 using prepared tests rather than asking participants to author every scenario. Do not copy answer-key tests into learner folders unless explicitly requested.
+
+The level descriptions and exit criteria below describe the full lab. In the 30-minute route, the two deferred unit defects remain follow-up work, so the final regression run is a review of current coverage, not full-lab completion. If the broader suite exceeds the closing timebox, start it during Level 4 and review its result at the end.
 
 ## Ground rules for Copilot
 
@@ -43,9 +49,11 @@ For a 60-minute version, provide the Level 1 solution tests and complete one sce
 
 **Files:** `GameModel.ts`, `Input.ts`, real physics/storage collaborators, and `tests/integration/game-model.test.ts`.
 
-**Skills:** distinguish integrated behavior from pure calculation; arrange deterministic overlap; create real keyboard events; use a mock only at an external callback boundary.
+**Skills:** distinguish integrated behavior from pure calculation; create real keyboard events; use a mock only at an external callback boundary.
 
-**Exit criteria:** a reset ball travels toward the paddle, an outgoing overlapping ball cannot score, and repeated keydown pauses once.
+**Scope:** one exercise only: Space key-repeat handling. Ball launch direction and paddle-overlap handling are already correct and are not part of this level.
+
+**Exit criteria:** a normal Space keydown followed by a repeated keydown pauses once; existing regression tests remain green.
 
 ## Level 3 — E2E
 

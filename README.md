@@ -1,6 +1,6 @@
 # Copilot Pong Testing Lab
 
-A single-player Pong workshop for practicing **test-first debugging with GitHub Copilot**. The starter game is playable but contains eight deliberate defects. Learners progressively expose and fix them with unit, integration, end-to-end, and Playwright-focused tests.
+A single-player Pong workshop for practicing **test-first debugging with GitHub Copilot**. The starter game is playable but contains six deliberate defects. Learners progressively expose and fix them with unit, integration, end-to-end, and Playwright-focused tests.
 
 The visual treatment follows the supplied reference: black field, green monospace Score/Best display, white ball, and a blue paddle. See [`docs/reference-pong.png`](docs/reference-pong.png).
 
@@ -16,6 +16,8 @@ The visual treatment follows the supplied reference: black field, green monospac
 | 4 | Playwright | `tests/playwright` | Keyboard input, web-first assertions, deterministic state, and traces |
 
 **Why both E2E and Playwright?** E2E is the scope of a test. Playwright is the browser automation tool. Level 3 focuses on complete player outcomes; Level 4 deliberately practices Playwright-specific APIs and debugging techniques.
+
+Level 2 has one integration exercise: ignoring repeated Space keydown events. Ball launch direction and paddle-overlap handling are already correct and are not exercises.
 
 ## Quick start
 

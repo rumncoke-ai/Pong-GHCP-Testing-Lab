@@ -10,7 +10,7 @@ export class KeyboardInput {
     if (event.code === 'ArrowRight' || event.code === 'KeyD') this.state.right = true;
     if (event.code === 'Space') {
       event.preventDefault();
-      // INTENTIONAL BUG I3: key-repeat events toggle pause many times while held.
+      // INTENTIONAL BUG I1: key-repeat events toggle pause many times while held.
       this.onPause();
     }
   };

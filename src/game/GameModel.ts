@@ -52,15 +52,14 @@ export class GameModel {
     this.state.ball.y += this.state.ball.vy * dt;
     this.state.ball = bounceOffWalls(this.state.ball, this.state.width);
 
-    // INTENTIONAL BUG I1: no downward-motion guard or depenetration. A ball that
-    // remains inside the paddle can score repeatedly and flip direction each frame.
-    if (intersectsPaddle(this.state.ball, this.state.paddle)) {
+    if (this.state.ball.vy > 0 && intersectsPaddle(this.state.ball, this.state.paddle)) {
       const deflection = paddleDeflection(this.state.ball, this.state.paddle);
       this.state.ball.vx += deflection * 90;
+      this.state.ball.y = this.state.paddle.y - this.state.ball.radius;
       this.state.ball.vy *= -1;
       this.state.score += 1;
       saveBestScore(this.storage, this.state.score);
-      // INTENTIONAL BUG E1: bestScore in memory is never updated, so the UI is stale.
+      //  G E1: bestScore in memory is never updated, so the UI is stale.
     }
 
     if (this.state.ball.y - this.state.ball.radius > this.state.height) {
@@ -97,8 +96,7 @@ export class GameModel {
       x: FIELD_WIDTH / 2,
       y: FIELD_HEIGHT / 2,
       vx: BALL_SPEED * 0.55,
-      // INTENTIONAL BUG I2: a new ball launches away from the player's bottom paddle.
-      vy: -BALL_SPEED,
+      vy: BALL_SPEED,
       radius: BALL_RADIUS
     };
   }

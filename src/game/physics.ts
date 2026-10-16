@@ -33,3 +33,4 @@ export function paddleDeflection(ball: Ball, paddle: Paddle): number {
   const normalized = (ball.x - paddleCenter) / (paddle.width / 2);
   return Math.max(-1, Math.min(1, normalized));
 }
+ 

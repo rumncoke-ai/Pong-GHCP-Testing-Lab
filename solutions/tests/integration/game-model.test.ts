@@ -3,11 +3,6 @@ import { GameModel } from '../../../src/game/GameModel';
 import { KeyboardInput } from '../../../src/game/Input';
 
 describe('Level 2 solution tests', () => {
-  it('launches a reset ball toward the player paddle', () => {
-    const model = new GameModel(localStorage);
-    expect(model.snapshot().ball.vy).toBeGreaterThan(0);
-  });
-
   it('does not score again while a ball is already travelling away from the paddle', () => {
     const model = new GameModel(localStorage);
     const { paddle } = model.snapshot();

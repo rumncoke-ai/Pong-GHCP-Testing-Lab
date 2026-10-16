@@ -36,14 +36,14 @@ Architecture:
 - src/main.ts: composition root
 - expose window.__PONG_TEST__ only when the URL has ?testMode=1; include snapshot, setState, step, reset, and togglePause
 - add stable data-testid values for score, best-score, and status
+- newBall() must use positive BALL_SPEED for vy on startup, reset, and after a miss so the ball travels toward the bottom paddle; this is baseline behavior, not a defect or test exercise
+- paddle-hit handling must require ball.vy > 0 and place the ball at paddle.y - ball.radius before reflecting it upward; this is baseline behavior, not a defect or test exercise
 
 Seed exactly these intentional defects. Put a short `INTENTIONAL BUG <id>` comment at each defect so the facilitator can verify the seed, but do not add tests that already reveal the fix:
 U1. clampPaddleX clamps x to fieldWidth instead of fieldWidth - paddleWidth.
 U2. wall collision compares the ball center with 0/fieldWidth instead of considering radius.
 U3. best scores are compared as strings, so "100" does not replace "90".
-I1. paddle collision has no downward-motion guard or depenetration, allowing repeat scoring while overlapping.
-I2. a new/reset ball has a negative vy and launches away from the player's bottom paddle.
-I3. Space keydown ignores KeyboardEvent.repeat and can toggle pause repeatedly while held.
+I1. Space keydown ignores KeyboardEvent.repeat and can toggle pause repeatedly while held.
 E1. saving a new record does not update in-memory bestScore, so the UI stays stale until reload.
 E2. Reset run removes the persistent best score when it should reset only the current run.
 
@@ -53,6 +53,8 @@ Create starter tests with only it.todo/test.skip cases organized as:
 - tests/e2e/scoring.spec.ts
 - tests/playwright/controls.spec.ts
 
+Level 2 must contain exactly one todo case: repeated Space keydown. Do not add ball-launch or paddle-overlap exercises.
+
 Add scripts for dev, build, unit/integration Vitest, E2E Playwright, and Playwright-focused tests. Add README setup instructions and .github/copilot-instructions.md telling Copilot to add a failing test before each fix.
 
 First show the proposed file tree. Then create the files. Finally run npm install, npm run build, and the starter test suite. Do not fix any intentional defect.
@@ -60,7 +62,7 @@ First show the proposed file tree. Then create the files. Finally run npm instal
 
 ## Acceptance check
 
-Search for all eight IDs (`U1`–`U3`, `I1`–`I3`, `E1`–`E2`), confirm the app builds, and confirm starter tests are pending/skipped rather than red.
+Search for all six IDs (`U1`–`U3`, `I1`, `E1`–`E2`), confirm the app builds, and confirm starter tests are pending/skipped rather than red.
 
 
 ---
@@ -119,14 +121,14 @@ Run npm run test:unit and npm run build. Summarize each fix as: defect, failing 
 # Learner prompt — Level 2: integration testing
 
 ```text
-Work test-first on Level 2. Inspect GameModel, KeyboardInput, the physics helpers, and tests/integration/game-model.test.ts.
+Work test-first on Level 2. Inspect GameModel, KeyboardInput, and tests/integration/game-model.test.ts.
 
-Replace the todo cases with Vitest integration tests that verify collaboration between components:
-1. A newly constructed model launches the ball toward the bottom paddle (positive vy in this coordinate system).
-2. If a ball is overlapping the paddle but already moving upward, one zero-duration step must not increment score or flip it downward.
-3. A normal Space keydown followed by a repeat=true Space keydown calls the pause callback exactly once.
+Replace only the remaining Space key-repeat todo with a Vitest integration test:
+A normal Space keydown followed by a repeat=true Space keydown calls the pause callback exactly once.
 
-Use the real GameModel, real localStorage supplied by jsdom, and real KeyboardEvent objects. Mock only the pause callback. Use debugSetState as the deterministic seam; do not use timers or private-field access.
+Ball launch direction and paddle-overlap handling are already correct and are outside this exercise. Preserve existing regression tests; do not add exercises for these behaviors.
+
+Use real KeyboardEvent objects. Mock only the pause callback; do not use timers or private-field access.
 
 Do not modify production code yet. Run npm run test:integration and explain why these are integration tests rather than unit tests.
 ```
@@ -138,19 +140,19 @@ Do not modify production code yet. Run npm run test:integration and explain why 
 # Learner prompt — fix Level 2
 
 ```text
-Fix only the defects demonstrated by the new Level 2 tests.
+Fix only the Space key-repeat defect demonstrated by the new Level 2 test.
 
 Expected behavior:
-- newBall() must use a positive vertical velocity so the ball initially travels toward the bottom paddle;
-- paddle-hit handling must run only for a ball moving downward, and the resolved ball must be placed just above the paddle before moving away;
 - KeyboardInput must ignore repeated Space keydown events.
+
+Ball launch direction and paddle-overlap handling are already correct; leave GameModel unchanged.
 
 Keep the deterministic step API and public interfaces intact. Do not change tests. Run:
 1. npm run test:integration
 2. npm run test:unit
 3. npm run build
 
-Explain how the velocity guard and depenetration prevent repeat scoring at different frame rates.
+Explain how filtering repeated Space events prevents multiple pause toggles while the key is held.
 ```
 
 
